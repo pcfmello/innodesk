@@ -10,6 +10,7 @@ class Ticket extends Model
     use HasFactory;
 
     protected $fillable = [
+        'ticket_code',
         'title',
         'description',
         'is_resolved',
