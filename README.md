@@ -24,11 +24,11 @@ A helpdesk API to manage issues tickets reporting by our users
 
 ## Usage
 * Run the server locally:  
-`$ npm run dev`
-* The API is running at:  
-`http://localhost:5173/api`
+`$ php artisan serve`
+* The API prefix is:
+`http://localhost:8000/api`
 * The API documentation is available at:  
-`http://localhost:5173/api/documentation`
+`http://localhost:8000/api/documentation`
 
 ## Issues
 The issues used to develop this API are available [here](https://github.com/pcfmello/innodesk/issues).  
