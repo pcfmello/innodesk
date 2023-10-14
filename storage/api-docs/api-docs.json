@@ -1,0 +1,192 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "InnoDesk API Documentation",
+        "description": "Documentation for the InnoDesk API",
+        "contact": {
+            "email": "pcfmello@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/tickets": {
+            "get": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Retrieve list of tickets",
+                "description": "Get all tickets from the database",
+                "operationId": "aa5e80a6f31951862c4554396ce1b1fd",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ticket"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Create a new ticket",
+                "description": "Store a new ticket in the database",
+                "operationId": "storeTicket",
+                "requestBody": {
+                    "description": "Ticket to be created",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "The title of the ticket",
+                                        "type": "string",
+                                        "example": "New ticket"
+                                    },
+                                    "description": {
+                                        "description": "A description of the ticket's issue",
+                                        "type": "string",
+                                        "example": "New ticket description"
+                                    },
+                                    "is_resolved": {
+                                        "description": "The status of the ticket",
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ticket"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "description": "The validation errors.",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "Error to create the ticket. Please, try again later or contact the technical support."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "TicketStoreRequest": {
+                "title": "Ticket Store Request",
+                "description": "Ticket store request body data",
+                "required": [
+                    "title",
+                    "description"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "Title of the ticket",
+                        "type": "string",
+                        "format": "string",
+                        "example": "A sample ticket"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "Description of the ticket",
+                        "type": "string",
+                        "format": "string",
+                        "example": "This is a sample description for the ticket."
+                    },
+                    "is_resolved": {
+                        "title": "is_resolved",
+                        "description": "Status of the ticket",
+                        "type": "boolean",
+                        "format": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "Ticket": {
+                "properties": {
+                    "id": {
+                        "description": "The unique ID of the ticket",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "ticket_code": {
+                        "description": "The unique code of the ticket",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "The title of the ticket",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "The description of the ticket",
+                        "type": "string"
+                    },
+                    "is_resolved": {
+                        "description": "Flag indicating if the ticket is resolved",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
