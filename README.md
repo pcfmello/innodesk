@@ -2,18 +2,18 @@
 A helpdesk API to manage issues tickets reporting by our users
 
 ## Features
-* Create tickets
-* List opened tickets
-* List archived tickets
-* Update tickets
-* Archive tickets
+* List tickets
+* Create aticket
+* View a ticket
+* Update a ticket
+* Remove a ticket
 
 ## Requirements
-* Node.js
-* Composer
-* PHP 8.1
-* MySQL 8.0
-* Laravel 10+
+* [Composer](https://getcomposer.org/)
+* [PHP](https://www.php.net/)
+* [MySQL](https://www.mysql.com/)
+* [Laravel](https://laravel.com/)
+* [Node.js](https://nodejs.org/)
 
 ## Installation
 * Clone this repository:  
@@ -23,13 +23,15 @@ A helpdesk API to manage issues tickets reporting by our users
 * Request the environment file from the project manager and place it in the root folder of the project.
 
 ## Usage
-* Run the server locally:  
+* Running the server locally:  
 `$ php artisan serve`
+* Creating a changelog       :
+`$ npm run release`
 * The API prefix is:
 `http://localhost:8000/api`
 * The API documentation is available at:  
 `http://localhost:8000/api/documentation`
 
 ## Issues
-The issues used to develop this API are available [here](https://github.com/pcfmello/innodesk/issues).  
+Issues used to develop this API are available [here](https://github.com/pcfmello/innodesk/issues).  
 [Create new issues](https://github.com/pcfmello/innodesk/issues/new) to report bugs and suggest new features.
