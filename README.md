@@ -26,15 +26,17 @@ A helpdesk API to manage issues tickets reporting by our users
 `$ npm run db:migrate`
 
 ## Usage
-* Run the server locally:  
+* Running the server locally:  
 `$ php artisan serve`
+* Creating a changelog:
+`$ npm run release`
 * API prefix is:
 `http://localhost:8000/api`
 * API documentation is available at:  
-`http://localhost:8000/api/documentation`
+`http://localhost:8000/api/documentation`  
 * Generating API documentation:  
 `$ npm run generate:api-doc`
 
 ## Issues
-The issues used to develop this API are available [here](https://github.com/pcfmello/innodesk/issues).  
+Issues used to develop this API are available [here](https://github.com/pcfmello/innodesk/issues).  
 [Create new issues](https://github.com/pcfmello/innodesk/issues/new) to report bugs and suggest new features.
