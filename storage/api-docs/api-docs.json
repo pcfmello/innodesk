@@ -19,12 +19,27 @@
                 "tags": [
                     "Tickets"
                 ],
-                "summary": "Retrieve list of tickets",
-                "description": "Get all tickets from the database",
+                "summary": "Get a list of tickets",
+                "description": "Get a list of tickets with optional filtering by isResolved.",
                 "operationId": "aa5e80a6f31951862c4554396ce1b1fd",
+                "parameters": [
+                    {
+                        "name": "isResolved",
+                        "in": "query",
+                        "description": "Filter tickets by isResolved (0 for false, 1 for true)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "List of tickets",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -36,8 +51,29 @@
                             }
                         }
                     },
-                    "403": {
-                        "description": "Forbidden"
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "isResolved": [
+                                                    "The is resolved field must be one of the following: 0, 1."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -116,6 +152,170 @@
                                         "errors": {
                                             "type": "string",
                                             "example": "Error to create the ticket. Please, try again later or contact the technical support."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tickets/{id}": {
+            "put": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Update a Ticket",
+                "description": "Updates an existing ticket with the provided data.",
+                "operationId": "c1fed2bc5f00f4279c3d38565e671762",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ticket to be updated.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Data for updating the ticket.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the ticket (maximum 100 characters).",
+                                        "type": "string",
+                                        "example": "Existing ticket"
+                                    },
+                                    "description": {
+                                        "description": "Description of the ticket.",
+                                        "type": "string",
+                                        "example": "Editing the ticket description."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ticket updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors in the provided data.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "description": "Validation errors.",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error while updating the ticket or querying the database.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "description": "Error message.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tickets/{id}/toggle-resolve": {
+            "patch": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Toggle Ticket Resolution Status",
+                "description": "Toggle the resolution status of a ticket by its ID.",
+                "operationId": "c5d6229795fbb2f2a40fdaa53e755233",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ticket to toggle resolution status.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket resolution status toggled successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "Updated ticket data.",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors in the provided data.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "description": "Validation errors.",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error while toggling ticket resolution status or querying the database.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "description": "Error message.",
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"

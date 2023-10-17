@@ -2,9 +2,12 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "start:dev": "php artisan serve",
+        "db:migrate": "php artisan migrate",
+        "generate:api-doc": "php artisan l5-swagger:generate",
+        "release": "standard-version",
         "dev": "vite",
-        "build": "vite build",
-        "release": "standard-version"
+        "build": "vite build"
     },
     "devDependencies": {
         "axios": "^1.1.2",
