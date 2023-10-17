@@ -225,7 +225,7 @@ class TicketController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Patch(
      *     path="/tickets/{id}/toggle_resolve",
      *     summary="Toggle Ticket Resolution Status",
      *     description="Toggle the resolution status of a ticket by its ID.",
@@ -275,7 +275,7 @@ class TicketController extends Controller
      *     )
      * )
      */
-    public function toggle_resolve(string $id)
+    public function toggleResolve(string $id)
     {
         try {
 

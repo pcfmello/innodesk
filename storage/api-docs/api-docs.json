@@ -217,10 +217,10 @@
             }
         },
         "/tickets/{id}/toggle_resolve": {
-            "put": {
+            "patch": {
                 "summary": "Toggle Ticket Resolution Status",
                 "description": "Toggle the resolution status of a ticket by its ID.",
-                "operationId": "1328bb18bf29a926f71ce7977acd6069",
+                "operationId": "c11b2de33831c1c56a874d326dc1abf4",
                 "parameters": [
                     {
                         "name": "id",
