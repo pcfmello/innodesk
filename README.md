@@ -33,7 +33,7 @@ A helpdesk API to manage issues tickets reporting by our users
 * API prefix is:
 `http://localhost:8000/api`
 * API documentation is available at:  
-`http://localhost:8000/api/documentation`
+`http://localhost:8000/api/documentation`  
 * Generating API documentation:  
 `$ npm run generate:api-doc`
 
