@@ -22,6 +22,8 @@ A helpdesk API to manage issues tickets reporting by our users
 `$ composer install && npm install`
 * Request the environment file from the project manager and place it in the root folder of the project.
 * Create the database according to the data in the environment file.
+* Run the migrations:  
+`$ npm run db:migrate`
 
 ## Usage
 * Run the server locally:  

@@ -19,12 +19,27 @@
                 "tags": [
                     "Tickets"
                 ],
-                "summary": "Retrieve list of tickets",
-                "description": "Get all tickets from the database",
+                "summary": "Get a list of tickets",
+                "description": "Get a list of tickets with optional filtering by isResolved.",
                 "operationId": "aa5e80a6f31951862c4554396ce1b1fd",
+                "parameters": [
+                    {
+                        "name": "isResolved",
+                        "in": "query",
+                        "description": "Filter tickets by isResolved (0 for false, 1 for true)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "List of tickets",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -36,8 +51,29 @@
                             }
                         }
                     },
-                    "403": {
-                        "description": "Forbidden"
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "isResolved": [
+                                                    "The is resolved field must be one of the following: 0, 1."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },

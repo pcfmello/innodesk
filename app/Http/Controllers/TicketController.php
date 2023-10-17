@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TicketStoreRequest;
 use App\Models\Ticket;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use OpenApi\Annotations as OA;
 
@@ -24,25 +25,59 @@ class TicketController extends Controller
      * @OA\Get(
      *     path="/tickets",
      *     tags={"Tickets"},
-     *     summary="Retrieve list of tickets",
-     *     description="Get all tickets from the database",
+     *     summary="Get a list of tickets",
+     *     description="Get a list of tickets with optional filtering by isResolved.",
+     *     @OA\Parameter(
+     *         name="isResolved",
+     *         in="query",
+     *         description="Filter tickets by isResolved (0 for false, 1 for true)",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             enum={0, 1}
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Successful operation",
+     *         description="List of tickets",
      *         @OA\JsonContent(
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Ticket")
      *         )
      *     ),
      *     @OA\Response(
-     *         response=403,
-     *         description="Forbidden"
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="The given data was invalid."
+     *             ),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 example={
+     *                     "isResolved": {
+     *                         "The is resolved field must be one of the following: 0, 1."
+     *                     }
+     *                 }
+     *             )
+     *         )
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Ticket::all();
+        $isResolved = $request->input('isResolved');
+        $query = Ticket::query();
+
+        if ($isResolved !== null) {
+            $query->where('is_resolved', $isResolved);
+        }
+
+        $tickets = $query->get();
         return response()->json($tickets, 200);
     }
 
