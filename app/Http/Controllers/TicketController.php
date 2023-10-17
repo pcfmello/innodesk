@@ -139,6 +139,7 @@ class TicketController extends Controller
     /**
      * @OA\Put(
      *     path="/tickets/{id}",
+     *     tags={"Tickets"},
      *     summary="Update a Ticket",
      *     description="Updates an existing ticket with the provided data.",
      *     @OA\Parameter(
@@ -225,8 +226,9 @@ class TicketController extends Controller
     }
 
     /**
-     * @OA\Put(
-     *     path="/tickets/{id}/toggle_resolve",
+     * @OA\Patch(
+     *     path="/tickets/{id}/toggle-resolve",
+     *     tags={"Tickets"},
      *     summary="Toggle Ticket Resolution Status",
      *     description="Toggle the resolution status of a ticket by its ID.",
      *     @OA\Parameter(
@@ -275,7 +277,7 @@ class TicketController extends Controller
      *     )
      * )
      */
-    public function toggle_resolve(string $id)
+    public function toggleResolve(string $id)
     {
         try {
 
