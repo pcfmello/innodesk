@@ -20,3 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('tickets', TicketController::class);
+
+Route::prefix('tickets')->group(function () {
+    Route::put('/{id}/toggle_resolve', [TicketController::class, 'toggle_resolve'])->name('tickets.toggle_resolve');
+});
+
+

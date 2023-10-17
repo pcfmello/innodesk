@@ -223,4 +223,72 @@ class TicketController extends Controller
             return response()->json(['errors' => 'Error to update the ticket. Please, try again later or contact the technical support.'], 500);
         }
     }
+
+    /**
+     * @OA\Put(
+     *     path="/tickets/{id}/toggle_resolve",
+     *     summary="Toggle Ticket Resolution Status",
+     *     description="Toggle the resolution status of a ticket by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the ticket to toggle resolution status.",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ticket resolution status toggled successfully.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 description="Updated ticket data."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation errors in the provided data.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 description="Validation errors."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error while toggling ticket resolution status or querying the database.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="string",
+     *                 description="Error message."
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function toggle_resolve(string $id)
+    {
+        try {
+
+            $ticketToToggle = Ticket::findOrFail($id);
+            $ticketToToggle->is_resolved = !$ticketToToggle->is_resolved;
+            $ticketToToggle->update();
+            return response()->json(['data' => $ticketToToggle], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->validator->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['errors' => 'Error while querying the database.'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['errors' => 'Error to update the ticket. Please, try again later or contact the technical support.'], 500);
+        }
+    }
 }
