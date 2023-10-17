@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('tickets', TicketController::class)->except(['delete']);
-Route::patch('/{id}/toggle-resolve', [TicketController::class, 'toggleResolve']);
+Route::patch('/tickets/{id}/toggle-resolve', [TicketController::class, 'toggleResolve']);
 
 

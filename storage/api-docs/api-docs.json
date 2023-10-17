@@ -128,6 +128,9 @@
         },
         "/tickets/{id}": {
             "put": {
+                "tags": [
+                    "Tickets"
+                ],
                 "summary": "Update a Ticket",
                 "description": "Updates an existing ticket with the provided data.",
                 "operationId": "c1fed2bc5f00f4279c3d38565e671762",
@@ -216,11 +219,14 @@
                 }
             }
         },
-        "/tickets/{id}/toggle_resolve": {
+        "/tickets/{id}/toggle-resolve": {
             "patch": {
+                "tags": [
+                    "Tickets"
+                ],
                 "summary": "Toggle Ticket Resolution Status",
                 "description": "Toggle the resolution status of a ticket by its ID.",
-                "operationId": "c11b2de33831c1c56a874d326dc1abf4",
+                "operationId": "c5d6229795fbb2f2a40fdaa53e755233",
                 "parameters": [
                     {
                         "name": "id",
