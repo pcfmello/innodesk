@@ -2,9 +2,11 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "start:dev": "php artisan serve",
         "dev": "vite",
         "build": "vite build",
-        "release": "standard-version"
+        "release": "standard-version",
+        "generate:api-doc": "php artisan l5-swagger:generate"
     },
     "devDependencies": {
         "axios": "^1.1.2",

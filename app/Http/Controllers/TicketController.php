@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TicketStoreRequest;
 use App\Models\Ticket;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use OpenApi\Annotations as OA;
 
@@ -46,68 +47,68 @@ class TicketController extends Controller
     }
 
     /**
- * @OA\Post(
- *     path="/tickets",
- *     tags={"Tickets"},
- *     summary="Create a new ticket",
- *     description="Store a new ticket in the database",
- *     operationId="storeTicket",
- *     @OA\RequestBody(
- *         description="Ticket to be created",
- *         required=true,
- *         @OA\JsonContent(
- *             required={"title", "description"},
- *             @OA\Property(
- *                  property="title",
- *                  type="string",
- *                  description="The title of the ticket",
- *                  example="New ticket"
- *             ),
- *             @OA\Property(
- *                  property="description",
- *                  type="string",
- *                  description="A description of the ticket's issue",
- *                  example="New ticket description"
- *             ),
- *             @OA\Property(
- *                  property="is_resolved",
- *                  type="boolean",
- *                  description="The status of the ticket",
-  *                 example=false
- *              ),
- *         )
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Successful operation",
- *         @OA\JsonContent(ref="#/components/schemas/Ticket")
- *     ),
- *     @OA\Response(
- *         response=422,
- *         description="Validation error",
- *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                  property="errors",
- *                  type="object",
- *                  description="The validation errors."
- *             )
- *         )
- *     ),
- *     @OA\Response(
- *         response=500,
- *         description="Server error",
- *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                  property="errors",
- *                  type="string",
- *                  example="Error to create the ticket. Please, try again later or contact the technical support."
- *             )
- *         )
- *     ),
- * )
- */
+     * @OA\Post(
+     *     path="/tickets",
+     *     tags={"Tickets"},
+     *     summary="Create a new ticket",
+     *     description="Store a new ticket in the database",
+     *     operationId="storeTicket",
+     *     @OA\RequestBody(
+     *         description="Ticket to be created",
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"title", "description"},
+     *             @OA\Property(
+     *                  property="title",
+     *                  type="string",
+     *                  description="The title of the ticket",
+     *                  example="New ticket"
+     *             ),
+     *             @OA\Property(
+     *                  property="description",
+     *                  type="string",
+     *                  description="A description of the ticket's issue",
+     *                  example="New ticket description"
+     *             ),
+     *             @OA\Property(
+     *                  property="is_resolved",
+     *                  type="boolean",
+     *                  description="The status of the ticket",
+     *                  example=false
+     *              ),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="errors",
+     *                  type="object",
+     *                  description="The validation errors."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                  property="errors",
+     *                  type="string",
+     *                  example="Error to create the ticket. Please, try again later or contact the technical support."
+     *             )
+     *         )
+     *     ),
+     * )
+     */
     public function store(TicketStoreRequest $ticket)
     {
         try {
@@ -133,5 +134,93 @@ class TicketController extends Controller
             return $this->generate_unique_ticket_code();
         }
         return $ticket_code;
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/tickets/{id}",
+     *     summary="Update a Ticket",
+     *     description="Updates an existing ticket with the provided data.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the ticket to be updated.",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Data for updating the ticket.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="title",
+     *                 type="string",
+     *                 description="Title of the ticket (maximum 100 characters).",
+     *                 example="Existing ticket"
+     *             ),
+     *             @OA\Property(
+     *                 property="description",
+     *                 type="string",
+     *                 description="Description of the ticket.",
+     *                 example="Editing the ticket description."
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ticket updated successfully.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation errors in the provided data.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 description="Validation errors."
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error while updating the ticket or querying the database.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="string",
+     *                 description="Error message."
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function update(TicketStoreRequest $ticket, string $id)
+    {
+        try {
+
+            $ticketToUpdate = Ticket::findOrFail($id);
+            $data = $ticket->validate([
+                'title' => 'required|string|max:100',
+                'description' => 'required|string',
+            ]);
+            $ticketToUpdate->update($data);
+            return response()->json(['data' => $ticketToUpdate], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->validator->errors()], 422);
+        } catch (QueryException $e) {
+            return response()->json(['errors' => 'Error while querying the database.'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['errors' => 'Error to update the ticket. Please, try again later or contact the technical support.'], 500);
+        }
     }
 }
