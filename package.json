@@ -1,6 +1,8 @@
 {
-    "private": true,
-    "type": "module",
+    "name": "innodesk",
+    "version": "1.1.0",
+    "desctiption": "A helpdesk API to manage issues tickets reporting by our users",
+    "license": "MIT",
     "scripts": {
         "start:dev": "php artisan serve",
         "db:migrate": "php artisan migrate",
